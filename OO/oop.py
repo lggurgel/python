@@ -35,6 +35,21 @@ class Employee:
         days = [5, 6]
         return True if day.weekday() in days else False
 
+    # used for object recreation
+    def __repr__(self):
+        return "Employee('{}', '{}', {})".format(self.first, self.last, self.pay)
+
+    def __str__(self):
+        return '{} - {}'.format(self.fullname(), self.email)
+
+    def __add__(self, other):
+        if isinstance(other, Employee):
+            return self.pay + other.pay
+        return NotImplemented
+
+    def __len__(self):
+        return len(self.fullname())
+
 
 class Developer(Employee):
     raise_amount = 1.10
@@ -69,10 +84,13 @@ mng_1 = Manager('Lucas', 'Gurgel', 120000, [emp_1, dev_1])
 emp_str = 'Ana Paula-Gomes-30000'
 emp_2 = Employee.from_string(emp_str)
 
-print(isinstance(mng_1, Manager))
-print(isinstance(emp_1, Developer))
-print(issubclass(Developer, Employee))
-print(issubclass(Manager, Developer))
+# my_date = datetime.date(2020, 11, 7)
+# print(Employee.is_workday(my_date))
+
+# print(isinstance(mng_1, Manager))
+# print(isinstance(emp_1, Developer))
+# print(issubclass(Developer, Employee))
+# print(issubclass(Manager, Developer))
 
 print(Employee.fullname(emp_1))
 print(emp_2.fullname())
@@ -80,5 +98,6 @@ print(dev_1.__dict__)
 print(mng_1.__dict__)
 mng_1.print_emps()
 
-my_date = datetime.date(2020, 11, 7)
-print(Employee.is_workday(my_date))
+print(emp_1.__repr__())
+print(dev_1)
+print(dev_1 + mng_1)
