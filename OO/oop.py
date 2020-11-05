@@ -1,8 +1,8 @@
 # Python Object-Oriented Programming
+import datetime
 
 
 class Employee:
-
     num_of_emps = 0
     raise_amount = 1.04
 
@@ -27,25 +27,58 @@ class Employee:
     @classmethod
     def from_string(cls, emp_str):
         first, last, pay = emp_str.split('-')
-        
+
         return cls(first, last, pay)
 
     @staticmethod
     def is_workday(day):
         days = [5, 6]
         return True if day.weekday() in days else False
-    
+
+
+class Developer(Employee):
+    raise_amount = 1.10
+
+    def __init__(self, first, last, pay, prog_lang):
+        super().__init__(first, last, pay)
+        self.prog_lang = prog_lang
+
+
+class Manager(Employee):
+
+    def __init__(self, first, last, pay, employees=None):
+        super().__init__(first, last, pay)
+        self.employees = employees if employees else []
+
+    def add_emp(self, emp):
+        if emp not in self.employees:
+            self.employees.append(emp)
+
+    def remove_emp(self, emp):
+        if emp in self.employees:
+            self.employees.remove(emp)
+
+    def print_emps(self):
+        for emp in self.employees:
+            print('-->', emp.fullname())
+
 
 emp_1 = Employee('Lucas', 'Gurgel', 50000)
-
+dev_1 = Developer('Lucas', 'Gabriel', 90000, 'python')
+mng_1 = Manager('Lucas', 'Gurgel', 120000, [emp_1, dev_1])
 emp_str = 'Ana Paula-Gomes-30000'
-
 emp_2 = Employee.from_string(emp_str)
+
+print(isinstance(mng_1, Manager))
+print(isinstance(emp_1, Developer))
+print(issubclass(Developer, Employee))
+print(issubclass(Manager, Developer))
 
 print(Employee.fullname(emp_1))
 print(emp_2.fullname())
-
-import datetime
+print(dev_1.__dict__)
+print(mng_1.__dict__)
+mng_1.print_emps()
 
 my_date = datetime.date(2020, 11, 7)
 print(Employee.is_workday(my_date))
